@@ -2,7 +2,7 @@
 
 Clojure examples from clojuredocs.org for when `doc` is not enough!
 
-![](https://clojars.org/examples/latest-version.svg)
+[![](https://clojars.org/examples/latest-version.svg)](https://clojars.org/examples)
 
 ## Usage
 

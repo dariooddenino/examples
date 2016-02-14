@@ -1,6 +1,6 @@
 # examples
 
-When `doc` is not enough!
+Clojure examples from clojuredocs.org for when `doc` is not enough!
 
 ## Usage
 

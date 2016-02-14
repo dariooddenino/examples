@@ -1,6 +1,8 @@
-# examples
+﻿# examples
 
 Clojure examples from clojuredocs.org for when `doc` is not enough!
+
+![](https://clojars.org/examples/latest-version.svg)
 
 ## Usage
 

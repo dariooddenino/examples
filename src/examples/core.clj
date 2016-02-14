@@ -41,9 +41,17 @@
           as-hickory
           extract-examples)))
 
+(defn print-ex
+  [name examples]
+  (println "-----------------------------------------------")
+  (println name)
+  (println "-----------------------------------------------")
+  (println examples))
+
 (defmacro examples
+  "Prints examples taken from clojuredocs.org"
   [name]
   `(let [clean# #(->> (str %) (re-find #"#'(.*)") last)
          ex# (-> '~name resolve clean#)
          examples# (cached get-examples ex#)]
-     examples#))
+     (print-ex ex# examples#)))

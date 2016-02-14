@@ -1,4 +1,4 @@
-(defproject examples "0.1.1"
+(defproject examples "0.2.0"
   :description "Prints examples from clojuredocs.org"
   :url "https://github.com/dariooddenino/examples"
   :license {:name "Eclipse Public License"

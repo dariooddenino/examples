@@ -11,7 +11,7 @@ Clojure examples from clojuredocs.org for when `doc` is not enough!
 - Add the dependency to your project:
 ```clojure
 (defproject ...
-    :dependencies [[examples "0.1.1"]]}
+    :dependencies [[examples "0.3.0"]]}
 ```
 - And require it:
 ```clojure

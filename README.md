@@ -8,8 +8,6 @@ Clojure examples from clojuredocs.org for when `doc` is not enough!
 
 ### Installation
 
-- Download phantomjs
-- Create an environment variable `PHANTOMJS` that points to its executable
 - Add the dependency to your project:
 ```clojure
 (defproject ...
@@ -28,7 +26,7 @@ E.g. `(examples map)` will print all clojuredocs.org examples of `map`:
 
 ```clojure
 -----------------------------------------------
-clojure.core/map  
+clojure.core/map
 -----------------------------------------------
 (map inc [1 2 3 4 5])
 ;;=> (2 3 4 5 6)
@@ -61,21 +59,32 @@ clojure.core/map
 
 ;;=> ([:a :d :g] [:b :e :h] [:c :f :i])
 
-;; From http://clojure-examples.appspot.com/clojure.core/mapuser=> (map #(vector (first %) (* 2 (second %)))
+;; From http://clojure-examples.appspot.com/clojure.core/map
+
+-----------
+
+user=> (map #(vector (first %) (* 2 (second %)))
             {:a 1 :b 2 :c 3})
 ([:a 2] [:b 4] [:c 6])
 
-user=> (into {} *1)  
+user=> (into {} *1)
 {:a 2, :b 4, :c 6}
+
+-----------
+
 ;; Use a hash-map as a function to translate values in a collection from the 
 ;; given key to the associated value
 
-user=> (map {2 "two" 3 "three"} [5 3 2])  
+user=> (map {2 "two" 3 "three"} [5 3 2])
 (nil "three" "two")
 
 ;; then use (filter identity... to remove the nils
-user=> (filter identity (map {2 "two" 3 "three"} [5 3 2]))  
-("three" "two");; mapping over a hash-map applies (into) first. 
+user=> (filter identity (map {2 "two" 3 "three"} [5 3 2]))
+("three" "two")
+
+-----------
+
+;; mapping over a hash-map applies (into) first. 
 ;; need to use functions that deal with arrays (fn [[key val]] ...)
 (map pprint {:key :val :key1 :val1})
 ([:key :val]
@@ -89,7 +98,11 @@ nil nil)
 #{(nil nil)}
 
 (map second {:key :val :key1 :val1})
-(:val :val1)(map fn [a 4 x]
+(:val :val1)
+
+-----------
+
+(map fn [a 4 x]
         [b 5 y]
         [c 6])    
 ;        ^ ^
@@ -104,23 +117,36 @@ nil nil)
          '(a b c)
          '(4 5))
 
-user=> (map list  [1 2 3] '(a b c) '(4 5))  
+user=> (map list  [1 2 3] '(a b c) '(4 5))
 ((1 a 4) (2 b 5))
 ;same as
-user=> (list (list 1 'a 4) (list 2 'b 5))  
-((1 a 4) (2 b 5)); map passed two collection arguments. From 4Clojure Problem #157
+user=> (list (list 1 'a 4) (list 2 'b 5))
+((1 a 4) (2 b 5))
+
+-----------
+
+; map passed two collection arguments. From 4Clojure Problem #157
 
 (def d1 [:a :b :c])
 (#(map list % (range)) d1)
-;;=> ((:a 0) (:b 1) (:c 2));; Used without a collection, map will create a transducer:
+;;=> ((:a 0) (:b 1) (:c 2))
+
+-----------
+
+;; Used without a collection, map will create a transducer:
 (def xf (map inc))
 
 ;; We can now apply this transducer to a sequence:
 (transduce xf conj (range 5))
 ;; => [1 2 3 4 5]
+
+-----------
+
 ;; Extract keyword from a collection of obj
 (map :a '({:a 1 :b 0} {:a 2 :b 0} {:a 3 :b 1} {:a 3 :b 0}))
-;; =>(1 2 3 3)(= {:a 1 :b 2 :c 3} (hash-map :a 1 :b 2 :c 3))
+;; =>(1 2 3 3)
+
+-----------
 ```
 
 ### Clearing cache

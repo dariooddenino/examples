@@ -1,6 +1,13 @@
 Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
+## [0.3.0] - 2016-02-15
+### Removed
+- PhantomJs is no longer necessary
+
+### Changed
+- Modified the text ouput a little
+
 ## [0.2.1] - 2016-02-15
 ### Fixed
 - Problem with private methods

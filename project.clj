@@ -1,4 +1,4 @@
-(defproject examples "0.2.1"
+(defproject examples "0.3.0"
   :description "Prints examples from clojuredocs.org"
   :url "https://github.com/dariooddenino/examples"
   :license {:name "Eclipse Public License"
@@ -6,6 +6,5 @@
   :jvm-ops [(str "-Dphantomjs.binary.path=" (System/getenv "PHANTOMJS"))]
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [hickory "0.6.0"]
-                 [clj-webdriver/clj-webdriver "0.7.2"]
-                 [com.github.detro.ghostdriver/phantomjsdriver "1.1.0"]]
+                 [clj-http "2.0.1"]]
   :deploy-repositories [["clojars" {:sign-releases false}]])

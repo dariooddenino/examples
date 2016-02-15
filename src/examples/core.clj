@@ -2,14 +2,7 @@
   (:require [clojure.string :as str]
             [hickory.select :as s]
             [hickory.core :refer :all]
-            [clj-webdriver.taxi :refer :all]
-            [clj-webdriver.driver :refer [init-driver]])
-
-  ;;PhantomJS is necessary because the examples get dynamically injected
-  (import org.openqa.selenium.phantomjs.PhantomJSDriver
-          org.openqa.selenium.remote.DesiredCapabilities))
-
-(set-driver! (init-driver {:webdriver (PhantomJSDriver. (DesiredCapabilities.))}))
+            [clj-http.client :as c]))
 
 (def cache (atom {}))
 
@@ -23,25 +16,37 @@
 
 (defn build-url
   [vname]
-  (str "https://clojuredocs.org/" vname))
+  (str "http://clojuredocs.org/" vname))
 
-(defn extract-examples [body]
-  (apply str
-         (s/select
-           (s/descendant (s/class "syntaxify")
-                         (s/not (s/tag :span)))
-           body)))
+(defn get-data
+  [htree]
+  (-> (s/select (s/child (s/tag :head)
+                         (s/tag :script))
+                htree)
+      first :content last))
 
-(defn get-examples [ex]
-  (do (-> ex
-          build-url
-          to)
-      (-> (html "body")
-          parse
-          as-hickory
-          extract-examples)))
+(defn clean-data
+  [data]
+  (let [trimmed-data (subs data 31 (- (count data) 8))]
+    (-> trimmed-data
+        (str/replace #"\\\"" "\"")
+        (str/replace #"\\\"" "\"")
+        read-string)))
 
-(defn clean
+(defn get-examples
+  [ex]
+  (-> ex
+      build-url
+      c/get
+      :body
+      parse
+      as-hickory
+      get-data
+      clean-data
+      :examples
+      ))
+
+(defn clean-name
   [name-s]
   (as-> name-s $
         (str $)
@@ -54,12 +59,16 @@
   (println "-----------------------------------------------")
   (println name)
   (println "-----------------------------------------------")
-  (println examples))
+  (doseq [ex examples]
+    (dorun (map println (-> ex :body (str/split #"\\n"))))
+    (println)
+    (println "-----------")
+    (println)))
 
 (defmacro examples
   "Prints examples taken from clojuredocs.org"
   [fun]
-  `(let [ex# (-> '~fun resolve clean)
+  `(let [ex# (-> '~fun resolve clean-name)
          examples# (cached get-examples ex#)]
      (print-ex ex# examples#)))
 
@@ -69,6 +78,7 @@
   If no argument is provided, the entire cache is cleared"
   ([] `(do (reset! cache {})
            (println "Cache cleared!")))
-  ([fun] `(let [ex# (-> '~fun resolve clean)]
-             (do (swap! cache dissoc ex#)
-                 (println (str ex# " cache cleared!"))))))
+  ([fun] `(let [ex# (-> '~fun resolve clean-name)]
+            (do (swap! cache dissoc ex#)
+                (println (str ex# " cache cleared!"))))))
+

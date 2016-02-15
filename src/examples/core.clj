@@ -11,9 +11,9 @@
 
 (set-driver! (init-driver {:webdriver (PhantomJSDriver. (DesiredCapabilities.))}))
 
-(def ^:private cache (atom {}))
+(def cache (atom {}))
 
-(defn- cached
+(defn cached
   [fun key]
   (if-let [hit (get @cache key)]
     hit
@@ -21,18 +21,18 @@
       (swap! cache assoc key result)
       result)))
 
-(defn- build-url
+(defn build-url
   [vname]
   (str "https://clojuredocs.org/" vname))
 
-(defn- extract-examples [body]
+(defn extract-examples [body]
   (apply str
          (s/select
            (s/descendant (s/class "syntaxify")
                          (s/not (s/tag :span)))
            body)))
 
-(defn- get-examples [ex]
+(defn get-examples [ex]
   (do (-> ex
           build-url
           to)
@@ -41,7 +41,7 @@
           as-hickory
           extract-examples)))
 
-(defn- clean
+(defn clean
   [name-s]
   (as-> name-s $
         (str $)
@@ -49,7 +49,7 @@
         (last $)
         (str/replace $ "?" "_q")))
 
-(defn- print-ex
+(defn print-ex
   [name examples]
   (println "-----------------------------------------------")
   (println name)

@@ -152,7 +152,7 @@ user=> (list (list 1 'a 4) (list 2 'b 5))
 ### Clearing cache
 
 Cache can be cleared with `(clear-examples-cache [fun])`.
-If `name` is omitted, the entire cache will be cleared.
+If `fun` is omitted, the entire cache will be cleared.
 
 ## License
 
